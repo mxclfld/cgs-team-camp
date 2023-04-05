@@ -11,14 +11,12 @@ export class TodoController {
   }
 
   async createTodo(req: Request, res: Response) {
-    // TODO: validation
     const { name, description, isCompleted, isPrivate }: ITodo = req.body;
     const todo = await this.todoService.create({ name, description, isCompleted, isPrivate });
     res.send(todo);
   }
 
   async updateTodo(req: Request, res: Response) {
-    // TODO: validation
     const { todoId } = req.params;
     const { name, description, isCompleted, isPrivate }: ITodo = req.body;
     const todo = await this.todoService.update(todoId, {
@@ -31,14 +29,12 @@ export class TodoController {
   }
 
   async togglePrivate(req: Request, res: Response) {
-    // TODO: validation
     const { todoId } = req.params;
     const todo = await this.todoService.togglePrivate(todoId);
     res.send(todo);
   }
 
   async toggleCompleted(req: Request, res: Response) {
-    // TODO: validation
     const { todoId } = req.params;
     const todo = await this.todoService.toggleCompleted(todoId);
     res.send(todo);
