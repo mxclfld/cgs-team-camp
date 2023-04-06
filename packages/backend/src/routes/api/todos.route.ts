@@ -3,8 +3,10 @@ import { tryCatch } from '../../middlewares/tryCatch.middleware';
 import { isExist } from '../../middlewares/isExist.middleware';
 import ValidateBody from '../../middlewares/validator.middleware';
 import todoController from '../../controllers/todo.controller';
+import TodoService from '../../services/todo.service';
 
 const todosRouter: Router = Router();
+const todoService: TodoService = new TodoService();
 
 todosRouter.get('/', tryCatch(todoController.getAllTodos.bind(todoController)));
 
@@ -16,23 +18,27 @@ todosRouter.post(
 
 todosRouter.put(
   '/:todoId',
-  isExist,
+  isExist('todoId', todoService.findOneById),
   ValidateBody('todo'),
   tryCatch(todoController.updateTodo.bind(todoController))
 );
 
 todosRouter.patch(
   '/:todoId/private',
-  isExist,
+  isExist('todoId', todoService.findOneById),
   tryCatch(todoController.togglePrivate.bind(todoController))
 );
 
 todosRouter.patch(
   '/:todoId/complete',
-  isExist,
+  isExist('todoId', todoService.findOneById),
   tryCatch(todoController.toggleCompleted.bind(todoController))
 );
 
-todosRouter.delete('/:todoId', isExist, tryCatch(todoController.deleteTodo.bind(todoController)));
+todosRouter.delete(
+  '/:todoId',
+  isExist('todoId', todoService.findOneById),
+  tryCatch(todoController.deleteTodo.bind(todoController))
+);
 
 export default todosRouter;

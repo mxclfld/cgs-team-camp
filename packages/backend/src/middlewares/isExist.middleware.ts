@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { NOT_FOUND } from 'http-status-codes';
-import { Todo } from '../entities/todo.entity';
 
-export const isExist = async (req: Request, res: Response, next: NextFunction) => {
-  const { todoId } = req.params;
-  const result = await Todo.findOneBy({ id: todoId });
-  if (!result) {
-    res.status(NOT_FOUND).json({ error: `Item with id ${todoId} does not exist!` });
-  } else {
-    next();
-  }
-};
+export const isExist =
+  <T>(paramName: string, callback: (param: string) => T | null) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { [paramName]: param } = req.params;
+    const result = await callback(param);
+    if (!result) {
+      res.status(NOT_FOUND).json({ error: `Item with parameter ${param} does not exist!` });
+    } else {
+      next();
+    }
+  };

@@ -1,11 +1,18 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
 
 export const tryCatch =
-  (handler: RequestHandler): RequestHandler =>
-  (req: Request, res: Response, next: NextFunction) => {
+  <T>(
+    handler: (
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ) => Promise<{ data: T; status?: number }>
+  ) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-      handler(req, res, next);
+      const { data, status = 200 } = await handler(req, res, next);
+      res.status(status).json(data);
     } catch (error: any) {
       if (error.status && error.message) {
         res.status(error.status).json({ error: error.message });

@@ -33,9 +33,8 @@ export default class TodoService {
   }
 
   async delete(id: string) {
-    const todo = await this.findOneById(id);
-    const result = todo?.remove();
-    return result;
+    const todo = await Todo.delete({ id });
+    return todo;
   }
 
   async togglePrivate(id: string) {
