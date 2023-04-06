@@ -10,6 +10,12 @@ export class TodoController {
     return { data: todos };
   }
 
+  async getTodoById(req: Request) {
+    const { todoId } = req.params;
+    const todo = await this.todoService.findOneById(todoId);
+    return { data: todo };
+  }
+
   async createTodo(req: ITodoRequest) {
     const { name, description, isCompleted, isPrivate }: ITodo = req.body;
     const todo = await this.todoService.create({ name, description, isCompleted, isPrivate });

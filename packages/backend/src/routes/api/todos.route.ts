@@ -10,6 +10,12 @@ const todoService: TodoService = new TodoService();
 
 todosRouter.get('/', tryCatch(todoController.getAllTodos.bind(todoController)));
 
+todosRouter.get(
+  '/:todoId',
+  isExist('todoId', todoService.findOneById),
+  tryCatch(todoController.getTodoById.bind(todoController))
+);
+
 todosRouter.post(
   '/',
   ValidateBody('todo'),
