@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { BAD_REQUEST } from 'http-status-codes';
-import { ITodo } from '../types/todos.type';
 import validators from './validators';
 
 export default function ValidateBody(validator: string) {
@@ -14,7 +13,7 @@ export default function ValidateBody(validator: string) {
       if (error) {
         throw error;
       }
-      req.body = value as ITodo;
+      req.body = value;
       next();
     } catch (err: any) {
       res.status(BAD_REQUEST).json({ error: err.message, body: req.body });

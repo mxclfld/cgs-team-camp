@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { tryCatch } from '../../middlewares/tryCatch';
-import { isExist } from '../../middlewares/isExist';
-import ValidateBody from '../../middlewares/validator';
+import { tryCatch } from '../../middlewares/tryCatch.middleware';
+import { isExist } from '../../middlewares/isExist.middleware';
+import ValidateBody from '../../middlewares/validator.middleware';
 import todoController from '../../controllers/todo.controller';
 
 const todosRouter: Router = Router();
