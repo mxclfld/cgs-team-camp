@@ -48,8 +48,8 @@ export class TodoController {
 
   async deleteTodo(req: Request) {
     const { todoId } = req.params;
-    const todo = await this.todoService.delete(todoId);
-    return { data: todo };
+    await this.todoService.delete(todoId);
+    return { data: null, status: 204 };
   }
 }
 
