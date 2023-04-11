@@ -1,7 +1,7 @@
 import { AxiosStatic } from 'axios';
 
 export interface IHttpService {
-  baseUrl: string | undefined;
+  baseUrl: string;
   fetchingService: AxiosStatic;
   apiVersion: string;
 }

@@ -1,10 +1,10 @@
-import axios, { AxiosStatic } from 'axios';
+import axios, { AxiosRequestHeaders, AxiosStatic } from 'axios';
 import { IHttpService } from '../types/httpService.types';
 import { ITodoBody } from '../../todo/types/todoBody.type';
 
 export class HttpService implements IHttpService {
   constructor(
-    baseUrl = process.env.REACT_APP_BASE_URL,
+    baseUrl = process.env.REACT_APP_BASE_URL || 'https://localhost:4200',
     fetchingService = axios,
     apiVersion = 'api'
   ) {
@@ -13,7 +13,7 @@ export class HttpService implements IHttpService {
     this.apiVersion = apiVersion;
   }
 
-  baseUrl: string | undefined;
+  baseUrl: string;
 
   fetchingService: AxiosStatic;
 
@@ -23,6 +23,12 @@ export class HttpService implements IHttpService {
     return `${this.baseUrl}/${this.apiVersion}/${url}`;
   }
 
+  private populateTokenToHeaderConfig() {
+    return {
+      Authorization: localStorage.getItem('token')
+    };
+  }
+
   private extractUrlAndDataFromConfig({
     data,
     url,
@@ -30,7 +36,7 @@ export class HttpService implements IHttpService {
   }: {
     data?: ITodoBody;
     url: string;
-    [x: string]: any;
+    headers?: AxiosRequestHeaders;
   }) {
     return pureConfig;
   }
@@ -69,7 +75,7 @@ export class HttpService implements IHttpService {
     return response;
   }
 
-  async delete(config: { url: string; headers?: object }) {
+  async delete(config: { url: string; headers?: AxiosRequestHeaders }) {
     const response = await this.fetchingService.delete(
       this.getFullApiUrl(config.url),
       this.extractUrlAndDataFromConfig(config)
