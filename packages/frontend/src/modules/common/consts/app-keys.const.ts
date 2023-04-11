@@ -8,24 +8,22 @@ export const STORAGE_KEYS = {
 
 // React-query keys
 export const QUERY_KEYS = {
-  EXAMPLE: 'EXAMPLE',
-  TOKEN: 'TOKEN',
-  STATISTIC: 'statistic',
-  TRENDING: 'trending'
+  TODOS: 'TODOS',
+  TODO_ITEM: 'TODO_ITEM'
 };
 
 // Backend Routes
 export const BACKEND_KEYS = {
-  EXAMPLE: 'example',
-  COURSES: 'courses',
-  ARTICLES: 'articles',
-  STATISTIC: 'statistic',
-  TRENDING: 'trending',
-  FEATURED_ARTICLES: 'featured_articles'
+  TODOS: 'todos',
+  COMPLETE: '/complete',
+  PRIVATE: '/private'
 };
 
 export const ROUTER_KEYS = {
   ROOT: '/',
-  HOME: 'home',
-  AUTHORIZED: 'authorized'
+  LOGIN: '/login',
+  REGISTER: '/register',
+  PROFILE: '/profile',
+  TODOS_LIST: '/todos',
+  TODO_ITEM: '/todos/:todoId'
 };
