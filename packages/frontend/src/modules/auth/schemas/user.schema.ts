@@ -1,23 +1,24 @@
+/* eslint-disable no-useless-escape */
 import * as yup from 'yup';
 
 export const loginUserSchema = yup.object({
-  name: yup.string().required(),
+  email: yup.string().email().required(),
   password: yup
     .string()
     .matches(
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
-      'Password should contain at least 6 chars with 1 digit, lowercase and uppercase symbols!'
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+      'Password should contain at least 6 chars with 1 digit, lowercase, uppercase and special symbols!'
     )
     .required()
 });
 
 export const registerUserSchema = yup.object({
-  name: yup.string().required(),
+  email: yup.string().email().required(),
   password: yup
     .string()
     .matches(
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
-      'Password should contain at least 6 chars with 1 digit, lowercase and uppercase symbols!'
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+      'Password should contain at least 6 chars with 1 digit, lowercase, uppercase and special symbols!'
     )
     .required(),
   confirmPassword: yup
@@ -26,20 +27,20 @@ export const registerUserSchema = yup.object({
     .required()
 });
 
-export const profileUserSchema = yup.object({
-  name: yup.string().required(),
-  oldPassword: yup
+export const changePasswordSchema = yup.object({
+  email: yup.string().email().required(),
+  password: yup
     .string()
     .matches(
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
-      'Password should contain at least 6 chars with 1 digit, lowercase and uppercase symbols!'
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+      'Password should contain at least 6 chars with 1 digit, lowercase, uppercase and special symbols!'
     )
     .required(),
   newPassword: yup
     .string()
     .matches(
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
-      'Password should contain at least 6 chars with 1 digit, lowercase and uppercase symbols!'
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+      'Password should contain at least 6 chars with 1 digit, lowercase, uppercase and special symbols!'
     )
     .required()
 });

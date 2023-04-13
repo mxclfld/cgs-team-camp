@@ -2,14 +2,28 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography } from '@mui/material';
+import { useMutation } from 'react-query';
+import { AxiosError } from 'axios';
 import { PageWrapper } from '../../common/components/wrapper/wrapper.component';
 import { Form } from '../../common/components/form/form.component';
 import { APP_KEYS } from '../../common/consts';
 import { loginUserSchema } from '../schemas/user.schema';
+import { authService } from '../services/auth.service';
+import { IUserBody } from '../types/auth.type';
 
 export const Login = () => {
   // TODO: Check for user in DB on click
   const navigate = useNavigate();
+
+  const { mutate: loginUserMutation } = useMutation({
+    mutationFn: (data: IUserBody) => authService.loginUser(data),
+    onSuccess: (data) => {
+      localStorage.setItem(APP_KEYS.STORAGE_KEYS.TOKEN, data.data.token);
+    },
+    onError: (err: AxiosError) => {
+      console.log(err.message);
+    }
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -17,7 +31,9 @@ export const Login = () => {
       password: ''
     },
     validationSchema: loginUserSchema,
-    onSubmit: () => {
+    onSubmit: (values, actions) => {
+      loginUserMutation({ user: values });
+      actions.resetForm();
       navigate(APP_KEYS.ROUTER_KEYS.TODOS_LIST);
     }
   });
@@ -25,7 +41,7 @@ export const Login = () => {
   return (
     <PageWrapper>
       <Typography variant="h3">Login Page</Typography>
-      <Form>
+      <Form onSubmit={formik.handleSubmit}>
         <TextField
           required
           type="email"

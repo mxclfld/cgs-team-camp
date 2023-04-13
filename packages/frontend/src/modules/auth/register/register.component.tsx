@@ -2,14 +2,28 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography } from '@mui/material';
+import { AxiosError } from 'axios';
+import { useMutation } from 'react-query';
 import { PageWrapper } from '../../common/components/wrapper/wrapper.component';
 import { Form } from '../../common/components/form/form.component';
 import { APP_KEYS } from '../../common/consts';
 import { registerUserSchema } from '../schemas/user.schema';
+import { authService } from '../services/auth.service';
+import { IUserBody } from '../types/auth.type';
 
 export const Register = () => {
-  // TODO: Create new user on click
   const navigate = useNavigate();
+
+  const { mutate: registerUserMutation } = useMutation({
+    mutationFn: (data: IUserBody) => authService.registerUser(data),
+    onSuccess: (data) => {
+      localStorage.setItem(APP_KEYS.STORAGE_KEYS.TOKEN, data.data.token);
+    },
+    onError: (err: AxiosError) => {
+      console.log(err.message);
+    }
+  });
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -17,7 +31,9 @@ export const Register = () => {
       confirmPassword: ''
     },
     validationSchema: registerUserSchema,
-    onSubmit: () => {
+    onSubmit: (values, actions) => {
+      registerUserMutation({ user: { email: values.email, password: values.password } });
+      actions.resetForm();
       navigate(APP_KEYS.ROUTER_KEYS.TODOS_LIST);
     }
   });
@@ -25,7 +41,7 @@ export const Register = () => {
   return (
     <PageWrapper>
       <Typography variant="h3">Register Page</Typography>
-      <Form>
+      <Form onSubmit={formik.handleSubmit}>
         <TextField
           type="email"
           name="email"
@@ -64,7 +80,7 @@ export const Register = () => {
           <Button type="button" variant="contained" component={Link} to={APP_KEYS.ROUTER_KEYS.ROOT}>
             Back
           </Button>
-          <Button type="submit" variant="contained">
+          <Button type="submit" variant="contained" disabled={!(formik.dirty && formik.isValid)}>
             Register
           </Button>
         </Box>
