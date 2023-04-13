@@ -1,49 +1,55 @@
 import { Router } from 'express';
 import { tryCatch } from '../../middlewares/tryCatch.middleware';
+import { auth } from '../../middlewares/auth.middleware';
+import findTodoById from '../../utils/findTodoById';
 import { isExist } from '../../middlewares/isExist.middleware';
-import ValidateBody from '../../middlewares/validator.middleware';
+import validateBody from '../../middlewares/validator.middleware';
 import todoController from '../../controllers/todo.controller';
-import TodoService from '../../services/todo.service';
 
 const todosRouter: Router = Router();
-const todoService: TodoService = new TodoService();
 
-todosRouter.get('/', tryCatch(todoController.getAllTodos.bind(todoController)));
+todosRouter.get('/', auth, tryCatch(todoController.getAllTodos.bind(todoController)));
 
 todosRouter.get(
   '/:todoId',
-  isExist('todoId', todoService.findOneById),
+  auth,
+  isExist(findTodoById),
   tryCatch(todoController.getTodoById.bind(todoController))
 );
 
 todosRouter.post(
   '/',
-  ValidateBody('todo'),
+  auth,
+  validateBody('todo', 'todo'),
   tryCatch(todoController.createTodo.bind(todoController))
 );
 
 todosRouter.put(
   '/:todoId',
-  isExist('todoId', todoService.findOneById),
-  ValidateBody('todo'),
+  auth,
+  isExist(findTodoById),
+  validateBody('todo', 'todo'),
   tryCatch(todoController.updateTodo.bind(todoController))
 );
 
 todosRouter.patch(
   '/:todoId/private',
-  isExist('todoId', todoService.findOneById),
+  auth,
+  isExist(findTodoById),
   tryCatch(todoController.togglePrivate.bind(todoController))
 );
 
 todosRouter.patch(
   '/:todoId/complete',
-  isExist('todoId', todoService.findOneById),
+  auth,
+  isExist(findTodoById),
   tryCatch(todoController.toggleCompleted.bind(todoController))
 );
 
 todosRouter.delete(
   '/:todoId',
-  isExist('todoId', todoService.findOneById),
+  auth,
+  isExist(findTodoById),
   tryCatch(todoController.deleteTodo.bind(todoController))
 );
 

@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+// eslint-disable-next-line import/no-cycle
+import { User } from './user.entity';
 
 @Entity('todo')
 export class Todo extends BaseEntity {
@@ -16,4 +18,14 @@ export class Todo extends BaseEntity {
 
   @Column()
   isPrivate: boolean;
+
+  @ManyToOne(() => User, (user) => user.todos, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  @JoinColumn({ name: 'userId' })
+  user: User;
+
+  @Column()
+  userId: string;
 }
