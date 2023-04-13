@@ -1,4 +1,4 @@
-import { BAD_REQUEST } from 'http-status-codes';
+import { BAD_REQUEST, CREATED } from 'http-status-codes';
 import { HttpError } from '../utils/createError';
 import { IUser, IChangePassword, IUserRequest, Register, Login } from '../types/user.type';
 import UserService from '../services/user.service';
@@ -11,7 +11,8 @@ export class UserController {
     const data = await this.userService.register({ email, password });
 
     return {
-      data
+      data,
+      status: CREATED
     };
   }
 
