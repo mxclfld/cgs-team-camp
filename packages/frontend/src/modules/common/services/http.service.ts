@@ -1,5 +1,5 @@
 import axios, { AxiosRequestHeaders } from 'axios';
-import { ITodoBody } from '../../todo/types/todoBody.type';
+import { ITodoBody } from '../../todo/types/todo-body.type';
 import { IChangePasswordBody, IUserBody } from '../../auth/types/auth.type';
 import { APP_KEYS } from '../consts';
 

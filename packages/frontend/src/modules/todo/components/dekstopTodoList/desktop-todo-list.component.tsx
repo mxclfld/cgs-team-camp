@@ -14,8 +14,12 @@ import { ITodo } from '../../types/todo.type';
 import { TableItem } from '../tableItem/table-item.component';
 import { SPACES } from '../../../theme';
 import { AddTodo } from '../addTodo/add-todo.component';
+<<<<<<< HEAD
 import { Filter } from '../filter/filter.component';
 import { ModalWindow } from '../../../common/components/modalWindow/modal-window.component';
+=======
+import { ModalWindow } from '../modalWindow/modal-window.component';
+>>>>>>> cade125 (feat: Move filter from device containers to page container and connect filter to backend)
 
 type TodoListProps = {
   todos: ITodo[];
@@ -34,7 +38,6 @@ export const DesktopTodoList = ({
 }: TodoListProps) => (
   <>
     <Container>
-      <Filter />
       <Button sx={{ mb: SPACES.l }} type="button" onClick={handleOpen}>
         Add
       </Button>

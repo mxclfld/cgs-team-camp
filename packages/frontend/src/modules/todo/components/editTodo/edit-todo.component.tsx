@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Form } from '../../../common/components/form/form.component';
 import { ITodo } from '../../types/todo.type';
-import { ITodoBody } from '../../types/todoBody.type';
+import { ITodoBody } from '../../types/todo-body.type';
 import { todoService } from '../../services/todo.service';
 import { APP_KEYS } from '../../../common/consts';
 import { SPACES } from '../../../theme';
