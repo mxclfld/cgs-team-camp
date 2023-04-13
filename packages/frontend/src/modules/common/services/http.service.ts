@@ -1,23 +1,16 @@
-import axios, { AxiosRequestHeaders, AxiosStatic } from 'axios';
-import { IHttpService } from '../types/httpService.types';
+import axios, { AxiosRequestHeaders } from 'axios';
 import { ITodoBody } from '../../todo/types/todoBody.type';
 
-export class HttpService implements IHttpService {
+export class HttpService {
   constructor(
-    baseUrl = process.env.REACT_APP_BASE_URL || 'https://localhost:4200',
-    fetchingService = axios,
-    apiVersion = 'api'
+    public baseUrl = process.env.REACT_APP_BASE_URL,
+    public fetchingService = axios,
+    public apiVersion = 'api'
   ) {
     this.baseUrl = baseUrl;
     this.fetchingService = fetchingService;
     this.apiVersion = apiVersion;
   }
-
-  baseUrl: string;
-
-  fetchingService: AxiosStatic;
-
-  apiVersion: string;
 
   private getFullApiUrl(url: string): string {
     return `${this.baseUrl}/${this.apiVersion}/${url}`;
