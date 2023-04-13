@@ -37,7 +37,7 @@ export const AddTodo = ({ handleOpenError, handleClose }: AddTodoProps) => {
     },
     validationSchema: todoSchema,
     onSubmit: (values, actions) => {
-      addTodoMutation(values);
+      addTodoMutation({ todo: values });
       actions.resetForm();
       handleClose();
     }
