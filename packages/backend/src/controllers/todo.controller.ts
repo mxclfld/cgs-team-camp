@@ -1,5 +1,4 @@
 import { OK, NO_CONTENT } from 'http-status-codes';
-import { Request } from 'express';
 import { IUser } from '../types/user.type';
 import { ITodo, ITodoRequest } from '../types/todos.type';
 import TodoService from '../services/todo.service';
@@ -12,7 +11,7 @@ export class TodoController {
     return { data: todos, status: OK };
   }
 
-  async getTodoById(req: Request) {
+  async getTodoById(req: ITodoRequest<{ user: IUser }>) {
     const { todoId } = req.params;
     const todo = await this.todoService.findOneById(todoId);
     return { data: todo, status: OK };
