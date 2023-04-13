@@ -1,5 +1,7 @@
 import axios, { AxiosRequestHeaders } from 'axios';
 import { ITodoBody } from '../../todo/types/todoBody.type';
+import { IChangePasswordBody, IUserBody } from '../../auth/types/auth.type';
+import { APP_KEYS } from '../consts';
 
 export class HttpService {
   constructor(
@@ -18,7 +20,7 @@ export class HttpService {
 
   private populateTokenToHeaderConfig() {
     return {
-      Authorization: localStorage.getItem('token')
+      Authorization: `Bearer ${localStorage.getItem(APP_KEYS.STORAGE_KEYS.TOKEN)}`
     };
   }
 
@@ -27,14 +29,18 @@ export class HttpService {
     url,
     ...pureConfig
   }: {
-    data?: ITodoBody;
+    data?: ITodoBody | IUserBody | IChangePasswordBody;
     url: string;
     headers?: AxiosRequestHeaders;
   }) {
     return pureConfig;
   }
 
-  async get(config: { url: string }) {
+  async get(config: { url: string; headers?: AxiosRequestHeaders }) {
+    config.headers = {
+      ...config.headers,
+      ...this.populateTokenToHeaderConfig()
+    } as AxiosRequestHeaders;
     const response = await this.fetchingService.get(
       this.getFullApiUrl(config.url),
       this.extractUrlAndDataFromConfig(config)
@@ -42,7 +48,11 @@ export class HttpService {
     return response;
   }
 
-  async post(config: { data: ITodoBody; url: string }) {
+  async post(config: { data: ITodoBody | IUserBody; url: string; headers?: AxiosRequestHeaders }) {
+    config.headers = {
+      ...config.headers,
+      ...this.populateTokenToHeaderConfig()
+    } as AxiosRequestHeaders;
     const response = await this.fetchingService.post(
       this.getFullApiUrl(config.url),
       config.data,
@@ -51,7 +61,15 @@ export class HttpService {
     return response;
   }
 
-  async put(config: { data: ITodoBody; url: string }) {
+  async put(config: {
+    data: ITodoBody | IUserBody | IChangePasswordBody;
+    url: string;
+    headers?: AxiosRequestHeaders;
+  }) {
+    config.headers = {
+      ...config.headers,
+      ...this.populateTokenToHeaderConfig()
+    } as AxiosRequestHeaders;
     const response = await this.fetchingService.put(
       this.getFullApiUrl(config.url),
       config.data,
@@ -60,7 +78,11 @@ export class HttpService {
     return response;
   }
 
-  async patch(config: { url: string }) {
+  async patch(config: { url: string; headers?: AxiosRequestHeaders }) {
+    config.headers = {
+      ...config.headers,
+      ...this.populateTokenToHeaderConfig()
+    } as AxiosRequestHeaders;
     const response = await this.fetchingService.patch(
       this.getFullApiUrl(config.url),
       this.extractUrlAndDataFromConfig(config)
@@ -69,6 +91,10 @@ export class HttpService {
   }
 
   async delete(config: { url: string; headers?: AxiosRequestHeaders }) {
+    config.headers = {
+      ...config.headers,
+      ...this.populateTokenToHeaderConfig()
+    } as AxiosRequestHeaders;
     const response = await this.fetchingService.delete(
       this.getFullApiUrl(config.url),
       this.extractUrlAndDataFromConfig(config)
