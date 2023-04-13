@@ -6,8 +6,26 @@ import TodoService from '../services/todo.service';
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  async getAllTodos() {
-    const todos = await this.todoService.findAll();
+  async getAllTodos(req: ITodoRequest<{ user: IUser }>) {
+    let todos = await this.todoService.findAll();
+
+    const { search, status } = req.query;
+    if (search && typeof search === 'string') {
+      todos = todos.filter((todo) => todo.name.includes(search));
+    }
+
+    if (status === 'completed') {
+      todos = todos.filter((todo) => todo.isCompleted);
+    }
+
+    if (status === 'private') {
+      todos = todos.filter((todo) => todo.isPrivate);
+    }
+
+    if (status === 'public') {
+      todos = todos.filter((todo) => !todo.isPrivate);
+    }
+
     return { data: todos, status: OK };
   }
 
