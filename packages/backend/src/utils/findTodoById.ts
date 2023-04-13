@@ -1,8 +1,10 @@
+import { Request } from 'express';
 import { Todo } from '../entities/todo.entity';
 
-const findOneById = async (id: string) => {
+const findTodoById = async (req: Request) => {
+  const { id } = req.params;
   const todo = await Todo.findOneBy({ id });
   return todo;
 };
 
-export default findOneById;
+export default findTodoById;

@@ -1,4 +1,6 @@
+import { OK, NO_CONTENT } from 'http-status-codes';
 import { Request } from 'express';
+import { IUser } from '../types/user.type';
 import { ITodo, ITodoRequest } from '../types/todos.type';
 import TodoService from '../services/todo.service';
 
@@ -7,49 +9,64 @@ export class TodoController {
 
   async getAllTodos() {
     const todos = await this.todoService.findAll();
-    return { data: todos };
+    return { data: todos, status: OK };
   }
 
   async getTodoById(req: Request) {
     const { todoId } = req.params;
     const todo = await this.todoService.findOneById(todoId);
-    return { data: todo };
+    return { data: todo, status: OK };
   }
 
-  async createTodo(req: ITodoRequest) {
-    const { name, description, isCompleted, isPrivate }: ITodo = req.body;
-    const todo = await this.todoService.create({ name, description, isCompleted, isPrivate });
-    return { data: todo };
+  async createTodo(req: ITodoRequest<{ user: IUser; todo: ITodo }>) {
+    const { name, description, isCompleted, isPrivate }: ITodo = req.body.todo;
+    const { id: userId }: IUser = req.body.user;
+    const todo = await this.todoService.create(
+      { name, description, isCompleted, isPrivate },
+      userId
+    );
+    return {
+      data: todo,
+      status: OK
+    };
   }
 
-  async updateTodo(req: ITodoRequest) {
+  async updateTodo(req: ITodoRequest<{ user: IUser; todo: ITodo }>) {
     const { todoId } = req.params;
-    const { name, description, isCompleted, isPrivate }: ITodo = req.body;
-    const todo = await this.todoService.update(todoId, {
-      name,
-      description,
-      isCompleted,
-      isPrivate
-    });
-    return { data: todo };
+    const { id: userId } = req.body.user;
+    const { name, description, isCompleted, isPrivate }: ITodo = req.body.todo;
+    const todo = await this.todoService.update(
+      todoId,
+      {
+        name,
+        description,
+        isCompleted,
+        isPrivate
+      },
+      userId
+    );
+    return { data: todo, status: OK };
   }
 
-  async togglePrivate(req: Request) {
+  async togglePrivate(req: ITodoRequest<{ user: IUser }>) {
     const { todoId } = req.params;
-    const todo = await this.todoService.togglePrivate(todoId);
-    return { data: todo };
+    const { id: userId } = req.body.user;
+    const todo = await this.todoService.togglePrivate(todoId, userId);
+    return { data: todo, status: OK };
   }
 
-  async toggleCompleted(req: Request) {
+  async toggleCompleted(req: ITodoRequest<{ user: IUser }>) {
     const { todoId } = req.params;
-    const todo = await this.todoService.toggleCompleted(todoId);
-    return { data: todo };
+    const { id: userId } = req.body.user;
+    const todo = await this.todoService.toggleCompleted(todoId, userId);
+    return { data: todo, status: OK };
   }
 
-  async deleteTodo(req: Request) {
+  async deleteTodo(req: ITodoRequest<{ user: IUser; todo: ITodo }>) {
     const { todoId } = req.params;
-    await this.todoService.delete(todoId);
-    return { data: null, status: 204 };
+    const { id: userId }: IUser = req.body.user;
+    await this.todoService.delete(todoId, userId);
+    return { data: null, status: NO_CONTENT };
   }
 }
 

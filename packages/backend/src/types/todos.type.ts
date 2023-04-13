@@ -1,5 +1,5 @@
-import Joi from 'joi';
 import { Request } from 'express';
+import Joi from 'joi';
 
 export interface IValidator {
   [key: string]: Joi.SchemaLike | Joi.SchemaLike[] | undefined;
@@ -12,6 +12,6 @@ export interface ITodo {
   isPrivate: boolean;
 }
 
-export interface ITodoRequest extends Request {
-  body: ITodo;
+export interface ITodoRequest<T> extends Request {
+  body: T;
 }
