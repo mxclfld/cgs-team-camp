@@ -17,7 +17,6 @@ export const tryCatch =
       if (error.httpCode && error.message) {
         res.status(error.httpCode).json({ error: error.message });
       } else {
-        console.log(error);
         res.status(INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
       }
     }
