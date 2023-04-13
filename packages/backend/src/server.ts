@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
+import './config/passport';
 
 import AppRouter from './routes';
 import connectDB from './config/database';
