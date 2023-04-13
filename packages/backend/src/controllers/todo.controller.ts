@@ -11,7 +11,7 @@ export class TodoController {
 
     const { search, status } = req.query;
     if (search && typeof search === 'string') {
-      todos = todos.filter((todo) => todo.name.includes(search));
+      todos = todos.filter((todo) => todo.name.toLowerCase().includes(search.toLowerCase()));
     }
 
     if (status === 'completed') {
