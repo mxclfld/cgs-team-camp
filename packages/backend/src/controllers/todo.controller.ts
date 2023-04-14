@@ -6,15 +6,16 @@ import TodoService from '../services/todo.service';
 interface IQueryType {
   search: string;
   status: string;
+  page: string;
 }
 
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
   async getAllTodos(req: ITodoQueryRequest<{ user: IUser }, IQueryType>) {
-    const { search = '', status = '' } = req.query;
-    const page = parseInt((req.params.page as string) || '1', 10);
-    const [todos, count] = await this.todoService.findAll({ page, search, status });
+    const { search = '', status = '', page = '1' } = req.query;
+    const listPage = parseInt(page, 10);
+    const [todos, count] = await this.todoService.findAll({ page: listPage, search, status });
 
     return { data: { todos, count }, status: OK };
   }

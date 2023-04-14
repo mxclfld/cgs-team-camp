@@ -5,10 +5,15 @@ import { APP_KEYS } from '../../common/consts';
 import { ITodoBody } from '../types/todo-body.type';
 import { ITodoFilter } from '../types/todo-filter.type';
 
+type ResType = {
+  todos: ITodo[];
+  count: number;
+};
+
 class TodoService extends HttpService {
-  getTodos({ search, status }: ITodoFilter): Promise<AxiosResponse<ITodo[]>> {
+  getTodos({ page, search, status }: ITodoFilter): Promise<AxiosResponse<ResType>> {
     return this.get({
-      url: `${APP_KEYS.BACKEND_KEYS.TODOS}/?search=${search}&status=${status}`
+      url: `${APP_KEYS.BACKEND_KEYS.TODOS}/?search=${search}&status=${status}&page=${page}`
     });
   }
 

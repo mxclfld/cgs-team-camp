@@ -11,6 +11,7 @@ interface IFindAll {
   search: string;
   status: string;
 }
+
 export default class TodoService {
   async findAll({ page, search, status }: IFindAll) {
     const perPage = 5;

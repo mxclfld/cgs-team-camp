@@ -36,7 +36,7 @@ export class HttpService {
     return pureConfig;
   }
 
-  async get(config: { url: string; headers?: AxiosRequestHeaders }) {
+  async get(config: { url: string; headers?: AxiosRequestHeaders; signal?: AbortSignal }) {
     config.headers = {
       ...config.headers,
       ...this.populateTokenToHeaderConfig()
