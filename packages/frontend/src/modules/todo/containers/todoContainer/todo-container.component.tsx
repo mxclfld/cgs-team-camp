@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { Container } from '@mui/material';
 import { AxiosError } from 'axios';
@@ -11,10 +11,14 @@ import { useDevice } from '../../../common/hooks/useDevice';
 import { MobileTodoList } from '../../components/mobileTodoList/mobile-todo-list.component';
 import { TabletTodoList } from '../../components/tabletTodoList/tablet-todo-list.component';
 import { ErrorModal } from '../../../common/components/error/error.component';
+import { Filter } from '../../components/filter/filter.component';
+import { DeviceEnum } from '../../../common/types/device.types';
 
 export const TodoContainer = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [search, setSearch] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
 
   const handleOpenError = (msg: string) => {
     setIsError(true);
@@ -22,13 +26,17 @@ export const TodoContainer = () => {
   };
   const handleCloseError = () => setIsError(false);
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [APP_KEYS.QUERY_KEYS.TODOS],
-    queryFn: () => todoService.getTodos(),
+    queryFn: () => todoService.getTodos({ search, status }),
     onError: (err: AxiosError) => {
       handleOpenError(err.message);
     }
   });
+
+  useEffect(() => {
+    refetch();
+  }, [search, status]);
 
   const device = useDevice();
 
@@ -42,7 +50,8 @@ export const TodoContainer = () => {
     <>
       <Header />
       <Container>
-        {device === 'mobile' ? (
+        <Filter search={search} setSearch={setSearch} setStatus={setStatus} />
+        {device === DeviceEnum.MOBILE ? (
           <MobileTodoList
             handleOpenError={handleOpenError}
             isOpen={isOpen}
@@ -50,7 +59,7 @@ export const TodoContainer = () => {
             handleClose={handleClose}
             todos={todos}
           />
-        ) : device === 'tablet' ? (
+        ) : device === DeviceEnum.TABLET ? (
           <TabletTodoList
             handleOpenError={handleOpenError}
             isOpen={isOpen}

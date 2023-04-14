@@ -14,7 +14,6 @@ import { ITodo } from '../../types/todo.type';
 import { TableItem } from '../tableItem/table-item.component';
 import { SPACES } from '../../../theme';
 import { AddTodo } from '../addTodo/add-todo.component';
-import { Filter } from '../filter/filter.component';
 import { ModalWindow } from '../../../common/components/modalWindow/modal-window.component';
 
 type TodoListProps = {
@@ -34,7 +33,6 @@ export const DesktopTodoList = ({
 }: TodoListProps) => (
   <>
     <Container>
-      <Filter />
       <Button sx={{ mb: SPACES.l }} type="button" onClick={handleOpen}>
         Add
       </Button>

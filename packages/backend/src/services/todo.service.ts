@@ -1,12 +1,25 @@
 import { FORBIDDEN, BAD_REQUEST, INTERNAL_SERVER_ERROR } from 'http-status-codes';
+import { ILike } from 'typeorm';
+import { FILTER } from '../consts/filter.const';
 import { HttpError } from '../utils/createError';
 import { User } from '../entities/user.entity';
 import { ITodo } from '../types/todos.type';
 import { Todo } from '../entities/todo.entity';
 
+interface IFindAll {
+  search: string;
+  status: string;
+}
+
 export default class TodoService {
-  async findAll() {
-    const todos = await Todo.find();
+  async findAll({ search, status }: IFindAll) {
+    const filter = FILTER[status];
+    const todos = await Todo.find({
+      where: {
+        name: ILike(`%${search}%`),
+        ...filter
+      }
+    });
     return todos;
   }
 

@@ -2,12 +2,13 @@ import { AxiosResponse } from 'axios';
 import { ITodo } from '../types/todo.type';
 import { HttpService } from '../../common/services/http.service';
 import { APP_KEYS } from '../../common/consts';
-import { ITodoBody } from '../types/todoBody.type';
+import { ITodoBody } from '../types/todo-body.type';
+import { ITodoFilter } from '../types/todo-filter.type';
 
 class TodoService extends HttpService {
-  getTodos(): Promise<AxiosResponse<ITodo[]>> {
+  getTodos({ search, status }: ITodoFilter): Promise<AxiosResponse<ITodo[]>> {
     return this.get({
-      url: `${APP_KEYS.BACKEND_KEYS.TODOS}`
+      url: `${APP_KEYS.BACKEND_KEYS.TODOS}/?search=${search}&status=${status}`
     });
   }
 

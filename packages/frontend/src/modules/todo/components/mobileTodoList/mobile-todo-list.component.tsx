@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Button, Box } from '@mui/material';
 import { SPACES } from '../../../theme';
 import { ITodo } from '../../types/todo.type';
-import { Filter } from '../filter/filter.component';
 import { AddTodo } from '../addTodo/add-todo.component';
 import { CardItem } from '../cardItem/card-item.component';
 import { ModalWindow } from '../../../common/components/modalWindow/modal-window.component';
@@ -24,7 +23,6 @@ export const MobileTodoList = ({
 }: TodoListProps) => (
   <>
     <Container>
-      <Filter />
       <Button sx={{ mb: SPACES.l }} type="button" onClick={handleOpen}>
         Add
       </Button>

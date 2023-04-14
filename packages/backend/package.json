@@ -49,6 +49,7 @@
         "@types/gravatar": "^1.8.0",
         "@types/jsonwebtoken": "^8.3.2",
         "@types/node": "^18.7.8",
+        "@types/qs": "^6.9.7",
         "concurrently": "^4.1.0",
         "nodemon": "^1.19.0",
         "tslint": "^6.1.3"

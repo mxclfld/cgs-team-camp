@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { ParsedQs } from 'qs';
 import Joi from 'joi';
 
 export interface IValidator {
@@ -14,4 +15,14 @@ export interface ITodo {
 
 export interface ITodoRequest<T> extends Request {
   body: T;
+}
+
+interface IQueryType extends ParsedQs {
+  search: string;
+  status: string;
+}
+
+export interface ITodoQueryRequest<T> extends Request {
+  body: T;
+  query: IQueryType;
 }

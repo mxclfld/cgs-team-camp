@@ -6,7 +6,7 @@ import { AxiosError } from 'axios';
 import { APP_KEYS } from '../../../common/consts';
 import { SPACES } from '../../../theme';
 import { todoService } from '../../services/todo.service';
-import { ITodoBody } from '../../types/todoBody.type';
+import { ITodoBody } from '../../types/todo-body.type';
 import { Form } from '../../../common/components/form/form.component';
 import { todoSchema } from '../../schemas/todo.schema';
 
