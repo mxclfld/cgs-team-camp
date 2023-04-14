@@ -1,18 +1,13 @@
 import { OK, NO_CONTENT } from 'http-status-codes';
 import { IUser } from '../types/user.type';
-import { ITodo, ITodoRequest } from '../types/todos.type';
+import { ITodo, ITodoQueryRequest, ITodoRequest } from '../types/todos.type';
 import TodoService from '../services/todo.service';
-
-interface IQueryType {
-  search: string;
-  status: string;
-}
 
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  async getAllTodos(req: ITodoRequest<{ user: IUser }>) {
-    const { search = '', status = '' } = req.query as unknown as IQueryType;
+  async getAllTodos(req: ITodoQueryRequest<{ user: IUser }>) {
+    const { search = '', status = '' } = req.query;
     const todos = await this.todoService.findAll({ search, status });
 
     return { data: todos, status: OK };
