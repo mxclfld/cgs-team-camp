@@ -4,7 +4,7 @@ import { INTERNAL_SERVER_ERROR, OK } from 'http-status-codes';
 export const tryCatch =
   <T>(
     handler: (
-      req: Request,
+      req: Request<any, any, any, any>,
       res: Response,
       next: NextFunction
     ) => Promise<{ data: T; status?: number }>
