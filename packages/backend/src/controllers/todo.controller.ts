@@ -3,14 +3,20 @@ import { IUser } from '../types/user.type';
 import { ITodo, ITodoQueryRequest, ITodoRequest } from '../types/todos.type';
 import TodoService from '../services/todo.service';
 
+interface IQueryType {
+  search: string;
+  status: string;
+}
+
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  async getAllTodos(req: ITodoQueryRequest<{ user: IUser }>) {
+  async getAllTodos(req: ITodoQueryRequest<{ user: IUser }, IQueryType>) {
     const { search = '', status = '' } = req.query;
-    const todos = await this.todoService.findAll({ search, status });
+    const page = parseInt((req.params.page as string) || '1', 10);
+    const [todos, count] = await this.todoService.findAll({ page, search, status });
 
-    return { data: todos, status: OK };
+    return { data: { todos, count }, status: OK };
   }
 
   async getTodoById(req: ITodoRequest<{ user: IUser }>) {

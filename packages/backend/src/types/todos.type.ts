@@ -17,12 +17,7 @@ export interface ITodoRequest<T> extends Request {
   body: T;
 }
 
-interface IQueryType extends ParsedQs {
-  search: string;
-  status: string;
-}
-
-export interface ITodoQueryRequest<T> extends Request {
+export interface ITodoQueryRequest<T, Y> extends Request {
   body: T;
-  query: IQueryType;
+  query: ParsedQs & Y;
 }
