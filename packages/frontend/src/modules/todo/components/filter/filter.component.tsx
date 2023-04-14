@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Button, ButtonGroup, SxProps, TextField, Theme } from '@mui/material';
 import { SPACES } from '../../../theme';
 import { useDevice } from '../../../common/hooks/useDevice';
+import { DeviceEnum } from '../../../common/types/device.types';
 
 type FilterProps = {
   search: string;
@@ -12,7 +13,7 @@ type FilterProps = {
 export const Filter = ({ search, setSearch, setStatus }: FilterProps) => {
   const device = useDevice();
   const style: SxProps<Theme> =
-    device === 'mobile'
+    device === DeviceEnum.MOBILE
       ? { display: 'flex', flexDirection: 'column', mt: SPACES.l, mb: SPACES.l, gap: SPACES.s }
       : { display: 'flex', justifyContent: 'space-between', mt: SPACES.l, mb: SPACES.l };
 

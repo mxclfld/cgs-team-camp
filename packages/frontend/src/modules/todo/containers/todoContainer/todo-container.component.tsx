@@ -12,6 +12,7 @@ import { MobileTodoList } from '../../components/mobileTodoList/mobile-todo-list
 import { TabletTodoList } from '../../components/tabletTodoList/tablet-todo-list.component';
 import { ErrorModal } from '../../../common/components/error/error.component';
 import { Filter } from '../../components/filter/filter.component';
+import { DeviceEnum } from '../../../common/types/device.types';
 
 export const TodoContainer = () => {
   const [isError, setIsError] = useState<boolean>(false);
@@ -50,7 +51,7 @@ export const TodoContainer = () => {
       <Header />
       <Container>
         <Filter search={search} setSearch={setSearch} setStatus={setStatus} />
-        {device === 'mobile' ? (
+        {device === DeviceEnum.MOBILE ? (
           <MobileTodoList
             handleOpenError={handleOpenError}
             isOpen={isOpen}
@@ -58,7 +59,7 @@ export const TodoContainer = () => {
             handleClose={handleClose}
             todos={todos}
           />
-        ) : device === 'tablet' ? (
+        ) : device === DeviceEnum.TABLET ? (
           <TabletTodoList
             handleOpenError={handleOpenError}
             isOpen={isOpen}
