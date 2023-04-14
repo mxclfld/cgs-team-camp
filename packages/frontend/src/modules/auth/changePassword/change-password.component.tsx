@@ -2,19 +2,18 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
+import { useMutation } from 'react-query';
 import { PageWrapper } from '../../common/components/wrapper/wrapper.component';
 import { Form } from '../../common/components/form/form.component';
 import { APP_KEYS } from '../../common/consts';
-import { loginUserSchema } from '../schemas/user.schema';
+import { changePasswordSchema } from '../schemas/user.schema';
+import { IChangePasswordBody } from '../types/auth.type';
 import { authService } from '../services/auth.service';
-import { IUserBody } from '../types/auth.type';
 import { ErrorModal } from '../../common/components/error/error.component';
 
-export const Login = () => {
+export const ChangePassword = () => {
   const navigate = useNavigate();
-
   const [isError, setisError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -28,8 +27,8 @@ export const Login = () => {
     setisError(false);
   };
 
-  const { mutate: loginUserMutation } = useMutation({
-    mutationFn: (data: IUserBody) => authService.loginUser(data),
+  const { mutate: changePasswordMutation } = useMutation({
+    mutationFn: (data: IChangePasswordBody) => authService.changePassword(data),
     onSuccess: (data) => {
       localStorage.setItem(APP_KEYS.STORAGE_KEYS.TOKEN, data.data.token);
     },
@@ -41,23 +40,23 @@ export const Login = () => {
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: ''
+      password: '',
+      newPassword: ''
     },
-    validationSchema: loginUserSchema,
+    validationSchema: changePasswordSchema,
     onSubmit: (values, actions) => {
-      loginUserMutation({ user: values });
+      changePasswordMutation({ newUser: { ...values } });
       actions.resetForm();
-      navigate(APP_KEYS.ROUTER_KEYS.TODOS_LIST);
+      navigate(APP_KEYS.ROUTER_KEYS.ROOT);
     }
   });
 
   return (
     <>
       <PageWrapper>
-        <Typography variant="h3">Login Page</Typography>
+        <Typography variant="h3">Change Password</Typography>
         <Form onSubmit={formik.handleSubmit}>
           <TextField
-            required
             type="email"
             name="email"
             id="email"
@@ -68,27 +67,40 @@ export const Login = () => {
           />
           <p>{formik.touched.email && formik.errors.email ? formik.errors.email : ''}</p>
           <TextField
-            required
             type="password"
             name="password"
             id="password"
-            label="Password"
+            label="Old Password"
             value={formik.values.password}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
           />
           <p>{formik.touched.password && formik.errors.password ? formik.errors.password : ''}</p>
+          <TextField
+            type="password"
+            name="newPassword"
+            id="newPassword"
+            label="New password"
+            value={formik.values.newPassword}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+          />
+          <p>
+            {formik.touched.newPassword && formik.errors.newPassword
+              ? formik.errors.newPassword
+              : ''}
+          </p>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button
               type="button"
               variant="contained"
               component={Link}
-              to={APP_KEYS.ROUTER_KEYS.ROOT}
+              to={APP_KEYS.ROUTER_KEYS.PROFILE}
             >
               Back
             </Button>
             <Button type="submit" variant="contained" disabled={!(formik.dirty && formik.isValid)}>
-              Login
+              Submit
             </Button>
           </Box>
         </Form>

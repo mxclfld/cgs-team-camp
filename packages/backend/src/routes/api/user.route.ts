@@ -23,7 +23,7 @@ userRouter.post(
   tryCatch(userController.login.bind(userController))
 );
 
-userRouter.post(
+userRouter.put(
   '/changePassword',
   auth,
   validateBody('newUser', 'changePassword'),

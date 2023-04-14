@@ -19,7 +19,7 @@ export const findUser = (userType: string) => async (req: Request) => {
   }
 
   if (!compareSync(password, user.password)) {
-    throw new HttpError({ httpCode: BAD_REQUEST, message: "Old passwords don't match!" });
+    throw new HttpError({ httpCode: BAD_REQUEST, message: "Passwords don't match!" });
   }
 
   return true;

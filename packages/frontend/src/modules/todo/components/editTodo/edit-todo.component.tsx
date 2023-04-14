@@ -42,7 +42,7 @@ export const EditTodo = ({ handleClose, todo }: EditTodoProps) => {
     },
     validationSchema: todoSchema,
     onSubmit: (values, actions) => {
-      updateTodoMutation({ data: values, todoId: todo.id });
+      updateTodoMutation({ data: { todo: values }, todoId: todo.id });
       actions.resetForm();
       navigate(APP_KEYS.ROUTER_KEYS.TODOS_LIST);
     }
