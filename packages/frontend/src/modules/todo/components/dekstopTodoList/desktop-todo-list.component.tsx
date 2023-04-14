@@ -15,7 +15,7 @@ import { TableItem } from '../tableItem/table-item.component';
 import { SPACES } from '../../../theme';
 import { AddTodo } from '../addTodo/add-todo.component';
 import { Filter } from '../filter/filter.component';
-import { ModalWindow } from '../modalWindow/modal-window.component';
+import { ModalWindow } from '../../../common/components/modalWindow/modal-window.component';
 
 type TodoListProps = {
   todos: ITodo[];

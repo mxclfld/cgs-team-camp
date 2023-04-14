@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Box, Paper } from '@mui/material';
 import { SIZES, SPACES } from '../../../theme';
-import { useDevice } from '../../../common/hooks/useDevice';
+import { useDevice } from '../../hooks/useDevice';
 
 type ModalProps = {
   isOpen: boolean;

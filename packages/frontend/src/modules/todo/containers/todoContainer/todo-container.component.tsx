@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { Button, Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import { AxiosError } from 'axios';
 import { Header } from '../../../header/header.component';
 import { DesktopTodoList } from '../../components/dekstopTodoList/desktop-todo-list.component';
@@ -10,7 +10,7 @@ import { todoService } from '../../services/todo.service';
 import { useDevice } from '../../../common/hooks/useDevice';
 import { MobileTodoList } from '../../components/mobileTodoList/mobile-todo-list.component';
 import { TabletTodoList } from '../../components/tabletTodoList/tablet-todo-list.component';
-import { ModalWindow } from '../../components/modalWindow/modal-window.component';
+import { ErrorModal } from '../../../common/components/error/error.component';
 
 export const TodoContainer = () => {
   const [isError, setIsError] = useState<boolean>(false);
@@ -68,12 +68,7 @@ export const TodoContainer = () => {
           />
         )}
       </Container>
-      <ModalWindow isOpen={isError} handleClose={handleCloseError}>
-        <>
-          <Typography variant="body1">{errorMessage}</Typography>
-          <Button onClick={handleCloseError}>Close</Button>
-        </>
-      </ModalWindow>
+      <ErrorModal isOpen={isError} handleClose={handleCloseError} message={errorMessage} />
     </>
   );
 };

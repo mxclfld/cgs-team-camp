@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Switch, Typography } from '@mui/material';
+import { Button, Switch } from '@mui/material';
 import { useMutation, useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
 import { AxiosError } from 'axios';
@@ -7,7 +7,8 @@ import { APP_KEYS } from '../../../common/consts';
 import { ITodo } from '../../types/todo.type';
 import { todoService } from '../../services/todo.service';
 import { EditTodo } from '../editTodo/edit-todo.component';
-import { ModalWindow } from '../modalWindow/modal-window.component';
+import { ModalWindow } from '../../../common/components/modalWindow/modal-window.component';
+import { ErrorModal } from '../../../common/components/error/error.component';
 
 type ActionsProps = {
   todo: ITodo;
@@ -72,12 +73,7 @@ export const Actions = ({ todo }: ActionsProps) => {
       <ModalWindow isOpen={isOpen} handleClose={handleClose}>
         <EditTodo handleClose={handleClose} todo={todo} />
       </ModalWindow>
-      <ModalWindow isOpen={isError} handleClose={handleCloseError}>
-        <>
-          <Typography variant="body1">{errorMessage}</Typography>
-          <Button onClick={handleCloseError}>Close</Button>
-        </>
-      </ModalWindow>
+      <ErrorModal isOpen={isError} handleClose={handleCloseError} message={errorMessage} />
     </>
   );
 };
