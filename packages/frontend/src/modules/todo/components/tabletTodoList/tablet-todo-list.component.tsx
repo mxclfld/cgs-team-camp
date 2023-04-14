@@ -7,12 +7,7 @@ import { SPACES } from '../../../theme';
 import { ITodo } from '../../types/todo.type';
 import { AddTodo } from '../addTodo/add-todo.component';
 import { CardItem } from '../cardItem/card-item.component';
-<<<<<<< HEAD
-import { Filter } from '../filter/filter.component';
 import { ModalWindow } from '../../../common/components/modalWindow/modal-window.component';
-=======
-import { ModalWindow } from '../modalWindow/modal-window.component';
->>>>>>> cade125 (feat: Move filter from device containers to page container and connect filter to backend)
 
 import 'swiper/css';
 import 'swiper/css/effect-cards';

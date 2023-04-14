@@ -10,12 +10,8 @@ import { todoService } from '../../services/todo.service';
 import { useDevice } from '../../../common/hooks/useDevice';
 import { MobileTodoList } from '../../components/mobileTodoList/mobile-todo-list.component';
 import { TabletTodoList } from '../../components/tabletTodoList/tablet-todo-list.component';
-<<<<<<< HEAD
 import { ErrorModal } from '../../../common/components/error/error.component';
-=======
-import { ModalWindow } from '../../components/modalWindow/modal-window.component';
 import { Filter } from '../../components/filter/filter.component';
->>>>>>> cade125 (feat: Move filter from device containers to page container and connect filter to backend)
 
 export const TodoContainer = () => {
   const [isError, setIsError] = useState<boolean>(false);
@@ -28,7 +24,6 @@ export const TodoContainer = () => {
     setErrorMessage(msg);
   };
   const handleCloseError = () => setIsError(false);
-  console.log('RENDER');
 
   const { data, refetch } = useQuery({
     queryKey: [APP_KEYS.QUERY_KEYS.TODOS],
