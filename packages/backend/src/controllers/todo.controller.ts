@@ -3,28 +3,17 @@ import { IUser } from '../types/user.type';
 import { ITodo, ITodoRequest } from '../types/todos.type';
 import TodoService from '../services/todo.service';
 
+interface IQueryType {
+  search: string;
+  status: string;
+}
+
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
   async getAllTodos(req: ITodoRequest<{ user: IUser }>) {
-    let todos = await this.todoService.findAll();
-
-    const { search, status } = req.query;
-    if (search && typeof search === 'string') {
-      todos = todos.filter((todo) => todo.name.toLowerCase().includes(search.toLowerCase()));
-    }
-
-    if (status === 'completed') {
-      todos = todos.filter((todo) => todo.isCompleted);
-    }
-
-    if (status === 'private') {
-      todos = todos.filter((todo) => todo.isPrivate);
-    }
-
-    if (status === 'public') {
-      todos = todos.filter((todo) => !todo.isPrivate);
-    }
+    const { search = '', status = '' } = req.query as unknown as IQueryType;
+    const todos = await this.todoService.findAll({ search, status });
 
     return { data: todos, status: OK };
   }
