@@ -55,12 +55,14 @@ export const AddTodo = ({ handleOpenError, handleClose }: AddTodoProps) => {
         name="name"
         value={formik.values.name}
         onChange={formik.handleChange}
+        autoComplete="off"
       />
       <TextField
         type="text"
         name="description"
         value={formik.values.description}
         onChange={formik.handleChange}
+        autoComplete="off"
       />
       <FormGroup>
         <FormControlLabel

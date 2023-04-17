@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { Container, Pagination } from '@mui/material';
+import { Button, Container, Pagination, Typography } from '@mui/material';
 import { AxiosError } from 'axios';
 import { Header } from '../../../header/header.component';
 import { DesktopTodoList } from '../../components/dekstopTodoList/desktop-todo-list.component';
@@ -14,6 +14,8 @@ import { Filter } from '../../components/filter/filter.component';
 import { DeviceEnum } from '../../../common/types/device.types';
 import { ITodo } from '../../types/todo.type';
 import { SPACES } from '../../../theme';
+import { ModalWindow } from '../../../common/components/modalWindow/modal-window.component';
+import { AddTodo } from '../../components/addTodo/add-todo.component';
 
 export const TodoContainer = () => {
   const [isError, setIsError] = useState<boolean>(false);
@@ -84,43 +86,35 @@ export const TodoContainer = () => {
       <Header />
       <Container>
         <Filter search={search} setSearch={handleSearch} setStatus={handleStatus} />
-        {device === DeviceEnum.MOBILE ? (
-          <MobileTodoList
-            todos={todos}
-            isOpen={isOpen}
-            handleOpen={handleOpen}
-            handleClose={handleClose}
-            handleOpenError={handleOpenError}
-            handleScroll={handleVerticalScroll}
-          />
-        ) : device === DeviceEnum.TABLET ? (
-          <TabletTodoList
-            handleOpenError={handleOpenError}
-            isOpen={isOpen}
-            handleOpen={handleOpen}
-            handleClose={handleClose}
-            todos={todos}
-            handleScroll={handleHorizontalScroll}
-          />
+        <Button sx={{ mb: SPACES.l }} type="button" onClick={handleOpen}>
+          Add
+        </Button>
+        {todos.length ? (
+          device === DeviceEnum.MOBILE ? (
+            <MobileTodoList todos={todos} handleScroll={handleVerticalScroll} />
+          ) : device === DeviceEnum.TABLET ? (
+            <TabletTodoList todos={todos} handleScroll={handleHorizontalScroll} />
+          ) : (
+            <>
+              <DesktopTodoList todos={todos} />
+              <Pagination
+                sx={{ mt: SPACES.l }}
+                count={pagesCount}
+                page={pageNumber}
+                onChange={handleChangePage}
+              />
+            </>
+          )
         ) : (
-          <>
-            <DesktopTodoList
-              handleOpenError={handleOpenError}
-              isOpen={isOpen}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
-              todos={todos}
-            />
-            <Pagination
-              sx={{ mt: SPACES.l }}
-              count={pagesCount}
-              page={pageNumber}
-              onChange={handleChangePage}
-            />
-          </>
+          <Typography sx={{ textAlign: 'center' }} variant="h6">
+            No todos yet! Maybe add one?
+          </Typography>
         )}
       </Container>
       <ErrorModal isOpen={isError} handleClose={handleCloseError} message={errorMessage} />
+      <ModalWindow isOpen={isOpen} handleClose={handleClose}>
+        <AddTodo handleOpenError={handleOpenError} handleClose={handleClose} />
+      </ModalWindow>
     </>
   );
 };

@@ -65,6 +65,7 @@ export const Login = () => {
             value={formik.values.email}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
+            autoComplete="off"
           />
           <p>{formik.touched.email && formik.errors.email ? formik.errors.email : ''}</p>
           <TextField
