@@ -18,14 +18,16 @@ type TodoListProps = {
   handleOpen: () => void;
   handleClose: () => void;
   handleOpenError: (msg: string) => void;
+  handleScroll: () => void;
 };
 
 export const TabletTodoList = ({
-  handleOpenError,
+  todos,
   isOpen,
   handleOpen,
   handleClose,
-  todos
+  handleOpenError,
+  handleScroll
 }: TodoListProps) => (
   <>
     <Container>
@@ -39,9 +41,13 @@ export const TabletTodoList = ({
           grabCursor
           modules={[EffectCards]}
         >
-          {todos.map((todo) => (
+          {todos.map((todo, i) => (
             <SwiperSlide key={todo.id}>
-              <CardItem todo={todo} />
+              {i === todos.length - 1 ? (
+                <CardItem todo={todo} onTouch={handleScroll} />
+              ) : (
+                <CardItem todo={todo} />
+              )}
             </SwiperSlide>
           ))}
         </Swiper>

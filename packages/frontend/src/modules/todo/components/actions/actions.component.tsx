@@ -9,6 +9,7 @@ import { todoService } from '../../services/todo.service';
 import { EditTodo } from '../editTodo/edit-todo.component';
 import { ModalWindow } from '../../../common/components/modalWindow/modal-window.component';
 import { ErrorModal } from '../../../common/components/error/error.component';
+import { authService } from '../../../auth/services/auth.service';
 
 type ActionsProps = {
   todo: ITodo;
@@ -17,6 +18,7 @@ type ActionsProps = {
 export const Actions = ({ todo }: ActionsProps) => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const isTodoCreator = authService.getUserId() === todo.userId;
 
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -51,11 +53,14 @@ export const Actions = ({ todo }: ActionsProps) => {
     deleteTodoMutation(todo.id);
   };
 
-  const handleChange = () => {
+  const handleComplete = () => {
     toggleCompletedMutation(todo.id);
   };
 
-  const handleOpen = () => setIsOpen(true);
+  const handleOpenEdit = () => {
+    setIsOpen(true);
+  };
+
   const handleClose = () => setIsOpen(false);
 
   return (
@@ -63,13 +68,13 @@ export const Actions = ({ todo }: ActionsProps) => {
       <Button type="button" component={Link} to={`${APP_KEYS.ROUTER_KEYS.TODOS_LIST}/${todo.id}`}>
         View
       </Button>
-      <Button type="button" onClick={handleOpen}>
+      <Button type="button" onClick={handleOpenEdit} disabled={!isTodoCreator}>
         Edit
       </Button>
-      <Button type="button" onClick={handleDelete}>
+      <Button type="button" onClick={handleDelete} disabled={!isTodoCreator}>
         Delete
       </Button>
-      <Switch checked={!!todo.isCompleted} onChange={handleChange} />
+      <Switch checked={!!todo.isCompleted} onChange={handleComplete} disabled={!isTodoCreator} />
       <ModalWindow isOpen={isOpen} handleClose={handleClose}>
         <EditTodo handleClose={handleClose} todo={todo} />
       </ModalWindow>

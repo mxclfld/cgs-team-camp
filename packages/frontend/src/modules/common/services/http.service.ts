@@ -85,6 +85,7 @@ export class HttpService {
     } as AxiosRequestHeaders;
     const response = await this.fetchingService.patch(
       this.getFullApiUrl(config.url),
+      null,
       this.extractUrlAndDataFromConfig(config)
     );
     return response;

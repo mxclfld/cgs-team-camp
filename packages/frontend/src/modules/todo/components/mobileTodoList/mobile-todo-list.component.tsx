@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Button, Box } from '@mui/material';
 import { SPACES } from '../../../theme';
 import { ITodo } from '../../types/todo.type';
@@ -12,28 +12,38 @@ type TodoListProps = {
   handleOpen: () => void;
   handleClose: () => void;
   handleOpenError: (msg: string) => void;
+  handleScroll: () => void;
 };
 
 export const MobileTodoList = ({
-  handleOpenError,
+  todos,
   isOpen,
   handleOpen,
   handleClose,
-  todos
-}: TodoListProps) => (
-  <>
-    <Container>
-      <Button sx={{ mb: SPACES.l }} type="button" onClick={handleOpen}>
-        Add
-      </Button>
-      <Box>
-        {todos.map((todo) => (
-          <CardItem key={todo.id} todo={todo} />
-        ))}
-      </Box>
-    </Container>
-    <ModalWindow isOpen={isOpen} handleClose={handleClose}>
-      <AddTodo handleOpenError={handleOpenError} handleClose={handleClose} />
-    </ModalWindow>
-  </>
-);
+  handleOpenError,
+  handleScroll
+}: TodoListProps) => {
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <>
+      <Container>
+        <Button sx={{ mb: SPACES.l }} type="button" onClick={handleOpen}>
+          Add
+        </Button>
+        <Box>
+          {todos.map((todo) => (
+            <CardItem key={todo.id} todo={todo} />
+          ))}
+        </Box>
+      </Container>
+      <ModalWindow isOpen={isOpen} handleClose={handleClose}>
+        <AddTodo handleOpenError={handleOpenError} handleClose={handleClose} />
+      </ModalWindow>
+    </>
+  );
+};

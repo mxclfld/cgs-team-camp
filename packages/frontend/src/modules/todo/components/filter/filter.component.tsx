@@ -13,7 +13,7 @@ type FilterProps = {
 export const Filter = ({ search, setSearch, setStatus }: FilterProps) => {
   const device = useDevice();
   const style: SxProps<Theme> =
-    device === DeviceEnum.MOBILE
+    device !== DeviceEnum.DESKTOP
       ? { display: 'flex', flexDirection: 'column', mt: SPACES.l, mb: SPACES.l, gap: SPACES.s }
       : { display: 'flex', justifyContent: 'space-between', mt: SPACES.l, mb: SPACES.l };
 

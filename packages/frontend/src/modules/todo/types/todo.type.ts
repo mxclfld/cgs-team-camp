@@ -4,4 +4,5 @@ export interface ITodo {
   description: string;
   isPrivate: boolean;
   isCompleted: boolean;
+  userId: string;
 }

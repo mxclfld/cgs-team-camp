@@ -14,8 +14,14 @@ export class TodoController {
 
   async getAllTodos(req: ITodoQueryRequest<{ user: IUser }, IQueryType>) {
     const { search = '', status = '', page = '1' } = req.query;
+    const { id: userId }: IUser = req.body.user;
     const listPage = parseInt(page, 10);
-    const [todos, count] = await this.todoService.findAll({ page: listPage, search, status });
+    const [todos, count] = await this.todoService.findAll({
+      page: listPage,
+      search,
+      status,
+      userId
+    });
 
     return { data: { todos, count }, status: OK };
   }
@@ -41,7 +47,7 @@ export class TodoController {
 
   async updateTodo(req: ITodoRequest<{ user: IUser; todo: ITodo }>) {
     const { todoId } = req.params;
-    const { id: userId } = req.body.user;
+    const { id: userId }: IUser = req.body.user;
     const { name, description, isCompleted, isPrivate }: ITodo = req.body.todo;
     const todo = await this.todoService.update(
       todoId,
@@ -58,14 +64,14 @@ export class TodoController {
 
   async togglePrivate(req: ITodoRequest<{ user: IUser }>) {
     const { todoId } = req.params;
-    const { id: userId } = req.body.user;
+    const { id: userId }: IUser = req.body.user;
     const todo = await this.todoService.togglePrivate(todoId, userId);
     return { data: todo, status: OK };
   }
 
   async toggleCompleted(req: ITodoRequest<{ user: IUser }>) {
     const { todoId } = req.params;
-    const { id: userId } = req.body.user;
+    const { id: userId }: IUser = req.body.user;
     const todo = await this.todoService.toggleCompleted(todoId, userId);
     return { data: todo, status: OK };
   }

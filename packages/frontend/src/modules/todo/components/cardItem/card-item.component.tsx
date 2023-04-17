@@ -7,10 +7,11 @@ import { SPACES } from '../../../theme';
 
 type CardItemProps = {
   todo: ITodo;
+  onTouch?: () => void;
 };
 
-export const CardItem = ({ todo }: CardItemProps) => (
-  <Card sx={{ mb: SPACES.l }}>
+export const CardItem = ({ todo, onTouch }: CardItemProps) => (
+  <Card sx={{ mb: SPACES.l }} onTouchStart={onTouch}>
     <CardContent>
       <Typography variant="h6">{todo.name}</Typography>
       <Typography variant="body1">

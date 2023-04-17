@@ -10,13 +10,15 @@ interface IFindAll {
   page: number;
   search: string;
   status: string;
+  userId: string;
 }
 
 export default class TodoService {
-  async findAll({ page, search, status }: IFindAll) {
+  async findAll({ page, search, status, userId }: IFindAll) {
     const perPage = 5;
     const skip = perPage * page - perPage;
-    const filter = FILTER[status];
+    const partFilter = FILTER[status];
+    const filter = status === 'private' ? { ...partFilter, userId } : partFilter;
     const todos = await Todo.findAndCount({
       where: {
         name: ILike(`%${search}%`),
@@ -103,7 +105,7 @@ export default class TodoService {
     if (todo.userId !== userId) {
       throw new HttpError({
         httpCode: FORBIDDEN,
-        message: "This todo doesn't belong to this user!"
+        message: "This todo doesn't belong to current user!"
       });
     }
 
